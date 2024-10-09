@@ -14,6 +14,10 @@ gem "puma", ">= 5.0"
 # hash
 gem 'bcrypt', '~> 3.1', '>= 3.1.20'
 
+#cors
+gem 'rack-cors', require: 'rack/cors'
+
+
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
 
