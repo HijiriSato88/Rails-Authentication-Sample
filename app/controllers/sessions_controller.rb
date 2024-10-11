@@ -1,9 +1,8 @@
 class SessionsController < ApplicationController
     def create
-        user = User.find_by(email: params[:email])
+        user = User.find_by(email: params[:email].downcase)
         if user && user.authenticate(params[:password])
-            user.update(logged_in: true) 
-            session[:user_id] = user.id
+            log_in user
             render json: { message: 'Logged in successfully', user: user }, status: :ok
         else
             render json: { message: 'Invalid email or password' }, status: :unauthorized
@@ -17,11 +16,16 @@ class SessionsController < ApplicationController
             render json: { message: 'Not logged in' }, status: :unauthorized
         end
     end
-
+    
     def destroy
-        user = current_user
-        user.update(logged_in: false) if user # ログアウト時にlogged_inをfalseに
-        session[:user_id] = nil
-        render json: { message: 'Logged out successfully' }, status: :ok
+        if logged_in?
+            user = current_user # ログアウトするユーザーを保存
+            log_out
+            render json: { message: 'Logged out successfully', user: user }, status: :ok
+        else
+            render json: { message: 'No user to log out' }, status: :unauthorized
+        end
     end
+
 end
+
