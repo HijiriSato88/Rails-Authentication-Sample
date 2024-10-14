@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   
     def index
         users = User.where(logged_in: true)
-        render json: users, status: :ok
+        render json:{ users:users }, status: :ok
     end
 
   end
