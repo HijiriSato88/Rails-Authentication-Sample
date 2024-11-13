@@ -11,14 +11,24 @@ class UsersController < ApplicationController
   end
   
   def index
+    #users = User.all
     users = User.where(logged_in: true)
     render json: { users: users }, status: :ok
   end
 
+  def update
+    @user = User.find(params[:id])
+    if @user.update(name: params[:name])
+      render json: @user, status: :ok
+    else
+      render json: @user.errors, status: :bad_request
+    end
+  end
+
   private
 
-  def user_params
-    params.require(:user).permit(:name, :email, :password)
-  end
+    def user_params
+      params.require(:user).permit(:name, :email, :password)
+    end
 
 end
