@@ -11,8 +11,13 @@ class UsersController < ApplicationController
   end
   
   def index
-    #users = User.all
-    users = User.where(logged_in: true)
+    users = User.all
+    fields = params[:fields]&.split(',')  
+
+    if fields.present?
+      users = users.select(fields.map(&:to_sym))
+    end
+    
     render json: { users: users }, status: :ok
   end
 

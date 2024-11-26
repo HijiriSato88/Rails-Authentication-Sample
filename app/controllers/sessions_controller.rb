@@ -19,5 +19,13 @@ class SessionsController < ApplicationController
         end
     end
 
+    def show
+        if logged_in?
+            render json: { user: current_user }, status: :ok
+        else
+            render json: { message: "ログインしていません。" }, status: :unauthorized
+        end
+    end
+
 end
 
